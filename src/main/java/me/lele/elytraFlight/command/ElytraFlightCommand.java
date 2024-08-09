@@ -20,24 +20,25 @@ public class ElytraFlightCommand {
     }
 
     @Execute
-    public void reloadCommand(@Context CommandSender sender) {
+    public void flyCommand(@Context CommandSender sender) {
 
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                ItemStack chestplate = player.getInventory().getChestplate();
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            ItemStack chestplate = player.getInventory().getChestplate();
 
-                if (chestplate != null && chestplate.getType() == Material.ELYTRA) {
+            if (chestplate != null && chestplate.getType() == Material.ELYTRA) {
+                if (chestplate.getDurability() < chestplate.getType().getMaxDurability()) {
                     player.setAllowFlight(!player.getAllowFlight());
                     player.sendMessage(ChatColor.AQUA + "[飞行系统] " + ChatColor.WHITE + "飞行模式: " + (player.getAllowFlight() ? "开启" : "关闭"));
-
-//                    if (player.getAllowFlight()) {
-//                        new ElytraDurabilityTask(player).runTaskTimer(plugin, 0L, 20L); // 每秒检查一次鞘翅耐久
-//                    }
                 } else {
-                    player.sendMessage(ChatColor.AQUA + "[飞行系统] " + ChatColor.WHITE + "你需要佩戴鞘翅才能使用飞行模式！");
+                    player.sendMessage(ChatColor.RED + "[飞行系统] " + ChatColor.WHITE + "你的鞘翅已经破损，无法开启飞行模式！");
                 }
+            } else {
+                player.sendMessage(ChatColor.AQUA + "[飞行系统] " + ChatColor.WHITE + "你需要佩戴鞘翅才能使用飞行模式！");
             }
+        }
 
     }
+
 
 }
